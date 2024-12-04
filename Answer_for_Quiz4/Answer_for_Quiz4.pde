@@ -1,43 +1,57 @@
-float x, y;              // Current location of Walker
-float tx, ty;            // Perlin time variable (for x and y)
-float tThiccness;        // Perlin time variable (for thickness)
-float tR, tG, tB;        // Perlin time variable (for RGB)
+Walker walker;
 
 void setup() {
-size(800, 600);        // Window size
-background(50);        // Set a grey background
-x = width / 2;         // Walker initial position (center of screen)
-y = height / 2;
-tx = random(1000);     // Initializes the Perlin time variable
-ty = random(1000);
-tThiccness = random(1000);
-tR = random(1000);
-tG = random(1000);
-tB = random(1000);
+size(800, 600);  // Canvas size
+background(50);  // Background color
+walker = new Walker();  // Create a Walker instance
 }
 
 void draw() {
-// Update x and y coordinates with Perlin Noise
-x += map(noise(tx), 0, 1, -5, 5);
-y += map(noise(ty), 0, 1, -5, 5);
+walker.walk();     // Walker moves
+walker.display();  // Walker render
+}
 
-// Update the Perlin time variable
-tx += 0.01;
-ty += 0.01;
+class Walker {
+float x, y;          // Walker's position
+float tX, tY;        // Perlin time variable is used for location
+float tSize;         // Perlin time variable is used for size
+float tR, tG, tB;    // Perlin time variable is used for color
 
-// thiccness
-float thiccness = map(noise(tThiccness), 0, 1, 5, 150);
-tThiccness += 0.01;
+Walker() {
+x = width / 2;     // Initial x coordinates
+y = height / 2;    // Initial y coordinate
+tX = random(100);  // Initialize the Perlin time variable randomly
+tY = random(100);
+tSize = random(100);
+tR = random(100);
+tG = random(100);
+tB = random(100);
+}
 
-// Dynamically adjust RGB colors
+void walk() {
+// Update location with Perlin noise
+x = map(noise(tX), 0, 1, 0, width);
+y = map(noise(tY), 0, 1, 0, height);
+tX += 0.01; // Add the time variable
+tY += 0.01;
+}
+
+void display() {
+// Use Perlin noise to update the size
+float size = map(noise(tSize), 0, 1, 5, 150);
+tSize += 0.01;
+
+// Use Perlin noise to update colors
 float r = map(noise(tR), 0, 1, 0, 255);
 float g = map(noise(tG), 0, 1, 0, 255);
-float b = 255;  // Keep the blue channel as default
-tR += 0.01;
+float b = map(noise(tB), 0, 1, 0, 255);
+tR += 0.01; // Add color time variable
 tG += 0.01;
+tB += 0.01;
 
-// Set the color and draw Walker
-fill(r, g, b, 100);     // Translucent color
+// Draw Walker
 noStroke();
-ellipse(x, y, thiccness, thiccness);  // Draw Walker
+fill(r, g, b, 200);  // alpha is set to 200
+ellipse(x, y, size, size);
+}
 }
