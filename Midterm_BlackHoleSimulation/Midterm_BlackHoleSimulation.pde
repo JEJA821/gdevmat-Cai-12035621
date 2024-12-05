@@ -1,13 +1,13 @@
 PVector blackHole;  // Black hole location
 float blackHoleSize = 50;  // Black hole size
-int resetFrames = 600;  // How many frames are reset every
+int resetFrames = 600;  // Reset every n frames
 int frameCounter = 0;  // Frame counter
 
 Walker[] matter;  // Object array
 int matterCount = 100;  // Number of objects
 
 void setup() {
-size(800, 600);  // Canvas size
+size(800, 600);  // Set the canvas size
 background(0);  // Black background
 matter = new Walker[matterCount];  // Initializes the object array
 
@@ -23,8 +23,8 @@ matter[i] = new Walker();
 void draw() {
 background(0);  // Clear screen per frame
 
-// If there is an extra component, the black hole follows the mouse
-blackHole.set(mouseX, mouseY);  // Black hole follows mouse
+// Bonus: Black hole follows mouse
+blackHole.set(mouseX, mouseY);  // Set the black hole position to the mouse position
 
 // Draw black holes
 fill(255);
@@ -52,11 +52,11 @@ void spawnBlackHole() {
 blackHole = new PVector(random(width), random(height));  // Randomly generate black hole locations
 }
 
-// Object class
+// Walker class
 class Walker {
-PVector position;  // Object location
-float size;  // Object size
-int r, g, b;  // Object color
+PVector position;  // Location
+float size;  // Size
+int r, g, b;  // Color
 
 Walker() {
 // Use Gaussian distribution to generate position
@@ -78,7 +78,7 @@ b = (int) random(255);
 
 void moveTowards(PVector target) {
 // Calculate the direction vector
-PVector direction = PVector.sub(target, position);
+PVector direction = PVector.sub(target, position);  // Static method, do not change the original location
 direction.normalize();  // Normalized direction vector
 direction.mult(2);  // Set the movement speed
 position.add(direction);  // Update location
@@ -87,6 +87,6 @@ position.add(direction);  // Update location
 void display() {
 fill(r, g, b);
 noStroke();
-ellipse(position.x, position.y, size, size);
+ellipse(position.x, position.y, size, size);  // Draw objects
 }
 }
